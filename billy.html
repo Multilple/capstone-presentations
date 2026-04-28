@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billy Martinez — EMS & Fire Rescue</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===========================================
+           DESIGN SYSTEM
+           =========================================== */
+        :root {
+            --bg-primary: #fafafa;
+            --bg-dark: #0c0c0c;
+            --bg-warm: #f5f0eb;
+            --bg-accent: #1a1a2e;
+
+            --text-dark: #1a1a1a;
+            --text-light: #ffffff;
+            --text-muted: #6b6b6b;
+
+            --accent-gold: #c9a227;
+            --accent-crimson: #8b2942;
+            --accent-warm: #d4a574;
+
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration: 0.8s;
+        }
+
+        /* ===========================================
+           RESET
+           =========================================== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-dark);
+            color: var(--text-dark);
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===========================================
+           PRESENTATION CONTAINER
+           =========================================== */
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* ===========================================
+           SLIDES
+           =========================================== */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: clamp(2rem, 6vw, 6rem);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .slide-content {
+            max-width: 1100px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
+        .eyebrow {
+            font-family: var(--font-body);
+            font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all var(--duration) var(--ease-out);
+            transition-delay: 0.1s;
+        }
+
+        .headline {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 7vw, 5.5rem);
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all var(--duration) var(--ease-out);
+            transition-delay: 0.2s;
+        }
+
+        .subheadline {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all var(--duration) var(--ease-out);
+            transition-delay: 0.25s;
+        }
+
+        .body-text {
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 1.8vw, 1.35rem);
+            font-weight: 400;
+            line-height: 1.7;
+            max-width: 750px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(25px);
+            transition: all var(--duration) var(--ease-out);
+            transition-delay: 0.35s;
+        }
+
+        .slide.active .eyebrow,
+        .slide.active .headline,
+        .slide.active .subheadline,
+        .slide.active .body-text,
+        .slide.active .quote-block,
+        .slide.active .card-grid,
+        .slide.active .timeline,
+        .slide.active .badge-row,
+        .slide.active .image-grid,
+        .slide.active .closing-statement {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===========================================
+           QUOTE BLOCK
+           =========================================== */
+        .quote-block {
+            max-width: 900px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all var(--duration) var(--ease-out);
+            transition-delay: 0.3s;
+        }
+
+        .quote-text {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 4vw, 2.75rem);
+            font-weight: 400;
+            font-style: italic;
+            line-height: 1.4;
+            margin-bottom: 1.5rem;
+        }
+
+        .quote-text::before {
+            content: '"';
+            color: var(--accent-gold);
+        }
+
+        .quote-text::after {
+            content: '"';
+            color: var(--accent-gold);
+        }
+
+        .quote-attribution {
+            font-family: var(--font-body);
+            font-size: clamp(0.85rem, 1.2vw, 1rem);
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        /* ===========================================
+           CARD GRID
+           =========================================== */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: clamp(1rem, 2vw, 1.5rem);
+            margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all var(--duration) var(--ease-out);
+            transition-delay: 0.4s;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: clamp(1.25rem, 2.5vw, 2rem);
+            text-align: left;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-gold);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-text {
+            font-size: clamp(0.85rem, 1.2vw, 1rem);
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+
+        /* ===========================================
+           BADGE ROW
+           =========================================== */
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(25px);
+            transition: all var(--duration) var(--ease-out);
+            transition-delay: 0.45s;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(201, 162, 39, 0.15);
+            border: 1px solid rgba(201, 162, 39, 0.4);
+            border-radius: 100px;
+            padding: 0.6rem 1.25rem;
+            font-size: clamp(0.85rem, 1.2vw, 1rem);
+            font-weight: 500;
+            color: var(--accent-gold);
+            transition: transform 0.2s ease;
+        }
+
+        .badge:hover {
+            transform: scale(1.05);
+        }
+
+        .badge-icon {
+            font-size: 1.2rem;
+        }
+
+        /* ===========================================
+           IMAGE GRID
+           For personal photos
+           =========================================== */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all var(--duration) var(--ease-out);
+            transition-delay: 0.4s;
+        }
+
+        .image-container {
+            position: relative;
+            aspect-ratio: 4/3;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .image-label {
+            position: absolute;
+            bottom: 0.75rem;
+            left: 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: white;
+            z-index: 2;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        /* Single feature image */
+        .image-feature {
+            max-width: 700px;
+            margin: 2rem auto 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all var(--duration) var(--ease-out);
+            transition-delay: 0.4s;
+        }
+
+        .slide.active .image-feature {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .image-feature img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Image placeholder styling */
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.75rem;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .image-placeholder::before {
+            content: '📷';
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.5;
+        }
+
+        /* ===========================================
+           TIMELINE
+           =========================================== */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            max-width: 600px;
+            margin: 2rem auto 0;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all var(--duration) var(--ease-out);
+            transition-delay: 0.4s;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1.5rem;
+            padding-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-marker {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #000;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .timeline-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 23px;
+            top: 48px;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent-gold);
+            opacity: 0.4;
+        }
+
+        .timeline-content {
+            padding-top: 0.5rem;
+        }
+
+        .timeline-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-text {
+            font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+            opacity: 0.75;
+            line-height: 1.5;
+        }
+
+        /* ===========================================
+           CLOSING STATEMENT
+           =========================================== */
+        .closing-statement {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all var(--duration) var(--ease-out);
+            transition-delay: 0.3s;
+        }
+
+        .closing-line {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 500;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+        }
+
+        .closing-line.highlight {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        /* ===========================================
+           SLIDE THEMES
+           =========================================== */
+        .slide--dark {
+            background: var(--bg-dark);
+            color: var(--text-light);
+        }
+        .slide--dark .eyebrow { color: var(--accent-gold); }
+
+        .slide--warm {
+            background: var(--bg-warm);
+            color: var(--text-dark);
+        }
+        .slide--warm .eyebrow { color: var(--accent-crimson); }
+
+        .slide--accent {
+            background: #1a1a2e;
+            color: var(--text-light);
+        }
+        .slide--accent .eyebrow { color: var(--accent-gold); }
+
+        .slide--light {
+            background: var(--bg-primary);
+            color: var(--text-dark);
+        }
+        .slide--light .eyebrow { color: var(--accent-crimson); }
+        .slide--light .card {
+            background: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+        .slide--light .badge {
+            background: rgba(139, 41, 66, 0.1);
+            border-color: rgba(139, 41, 66, 0.3);
+            color: var(--accent-crimson);
+        }
+
+        .slide--crimson {
+            background: #1f1318;
+            color: var(--text-light);
+        }
+        .slide--crimson .eyebrow { color: #e8b4b8; }
+
+        /* ===========================================
+           NAVIGATION
+           =========================================== */
+        .nav-progress {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .nav-dot.active {
+            background: var(--accent-gold);
+            transform: scale(1.3);
+        }
+
+        .nav-dot:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .nav-hint {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.1em;
+            z-index: 100;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.5);
+            z-index: 100;
+        }
+
+        /* ===========================================
+           RESPONSIVE
+           =========================================== */
+        @media (max-width: 768px) {
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                gap: 1rem;
+            }
+
+            .timeline-marker {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .timeline-item:not(:last-child)::before {
+                left: 19px;
+                top: 40px;
+            }
+
+            .nav-hint {
+                display: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .eyebrow, .headline, .subheadline, .body-text,
+            .quote-block, .card-grid, .timeline, .badge-row,
+            .image-grid, .image-feature, .closing-statement {
+                transition-duration: 0.01ms;
+            }
+            .slide {
+                transition-duration: 0.2s;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+
+        <!-- Slide 1: Title -->
+        <section class="slide slide--dark active" data-slide="1">
+            <div class="slide-content">
+                <p class="eyebrow">Orange Lutheran High School • First Responders Academy</p>
+                <h1 class="headline">Billy Martinez</h1>
+                <p class="subheadline">EMS & Fire Rescue</p>
+                <p class="body-text" style="margin-top: 1rem; opacity: 0.6;">
+                    Senior • ASB President
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 2: Why I'm Here -->
+        <section class="slide slide--warm" data-slide="2">
+            <div class="slide-content">
+                <p class="eyebrow">Why I'm Here</p>
+                <h2 class="headline">This is what I grew up around.</h2>
+                <p class="body-text">
+                    Fire stations, family dinners with firefighters, stories from the job. It was never a question of if. Just when.
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 3: The Legacy -->
+        <section class="slide slide--dark" data-slide="3">
+            <div class="slide-content">
+                <p class="eyebrow">Family</p>
+                <h2 class="headline">Five firefighters in my family.</h2>
+
+                <div class="card-grid" style="margin-top: 2.5rem;">
+                    <div class="card">
+                        <div class="card-icon">👨‍🚒</div>
+                        <h3 class="card-title">Two Uncles</h3>
+                        <p class="card-text">Both Fire Captains. One at Station 1 in Orange, where I've done ride-alongs.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔥</div>
+                        <h3 class="card-title">Three Cousins</h3>
+                        <p class="card-text">All with LA City Fire. Watching them work showed me what this career actually looks like.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: The Defining Moment -->
+        <section class="slide slide--crimson" data-slide="4">
+            <div class="slide-content">
+                <p class="eyebrow">The Moment That Stuck</p>
+
+                <div class="quote-block">
+                    <p class="quote-text">Being a stranger on someone's worst day and making that day better.</p>
+                    <p class="quote-attribution">My uncle, during an interview at Station 1</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Mission Trips -->
+        <section class="slide slide--accent" data-slide="5">
+            <div class="slide-content">
+                <p class="eyebrow">Beyond the Fire Service</p>
+                <h2 class="headline">Service doesn't stop at city limits.</h2>
+                <p class="body-text">
+                    I've been on mission trips to Cambodia, Taiwan, and Hong Kong. Different places, same purpose: show up for people.
+                </p>
+
+                <!-- IMAGE GRID: Replace the placeholder divs with your actual images -->
+                <div class="image-grid">
+                    <div class="image-container">
+                        <!-- Replace with: <img src="path/to/cambodia.jpg" alt="Cambodia mission trip"> -->
+                        <div class="image-placeholder">Cambodia photo</div>
+                        <span class="image-label">🇰🇭 Cambodia</span>
+                    </div>
+                    <div class="image-container">
+                        <!-- Replace with: <img src="path/to/taiwan.jpg" alt="Taiwan mission trip"> -->
+                        <div class="image-placeholder">Taiwan photo</div>
+                        <span class="image-label">🇹🇼 Taiwan</span>
+                    </div>
+                    <div class="image-container">
+                        <!-- Replace with: <img src="path/to/hongkong.jpg" alt="Hong Kong mission trip"> -->
+                        <div class="image-placeholder">Hong Kong photo</div>
+                        <span class="image-label">🇭🇰 Hong Kong</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Academy Experience -->
+        <section class="slide slide--light" data-slide="6">
+            <div class="slide-content">
+                <p class="eyebrow">What I've Done</p>
+                <h2 class="headline">Academy Experience</h2>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-icon">❤️</div>
+                        <h3 class="card-title">CPR & First Aid Certified</h3>
+                        <p class="card-text">Trained and ready to respond.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔥</div>
+                        <h3 class="card-title">Fire Behavior & Combustion</h3>
+                        <p class="card-text">Understanding how fire moves and spreads.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🏛️</div>
+                        <h3 class="card-title">Principles of Public Service</h3>
+                        <p class="card-text">The foundation of serving a community.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🚒</div>
+                        <h3 class="card-title">Ride-Alongs</h3>
+                        <p class="card-text">Real shifts at Station 1 with my uncle's crew.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📚</div>
+                        <h3 class="card-title">FTC 101</h3>
+                        <p class="card-text">Fire technology fundamentals.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">⭐</div>
+                        <h3 class="card-title">ASB President</h3>
+                        <p class="card-text">Leading my school the way I plan to serve my community.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Workplace Prep -->
+        <section class="slide slide--dark" data-slide="7">
+            <div class="slide-content">
+                <p class="eyebrow">Workplace Prep</p>
+                <h2 class="headline">Station 1, City of Orange</h2>
+                <p class="body-text" style="margin-top: 1.5rem;">
+                    I shadowed my uncle and his crew. Watched how they handle calls, run the station, and balance fire suppression with medical response. It's not just about putting out fires. Most calls are medical.
+                </p>
+                <p class="body-text" style="margin-top: 1rem;">
+                    Every shift I learned something. The crew treated me like I belonged there.
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 8: The Path Forward -->
+        <section class="slide slide--dark" data-slide="8">
+            <div class="slide-content">
+                <p class="eyebrow">What's Next</p>
+                <h2 class="headline">The Path Forward</h2>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker">1</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Now: First Responders Academy</h3>
+                            <p class="timeline-text">Building the foundation</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">2</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">College: EMT Certification</h3>
+                            <p class="timeline-text">Emergency Medical Technician training</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">3</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Paramedic Certification</h3>
+                            <p class="timeline-text">Advanced training and clinical hours</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">4</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Career: Ambulance Operator</h3>
+                            <p class="timeline-text">Continuing what my family started</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Closing -->
+        <section class="slide slide--accent" data-slide="9">
+            <div class="slide-content">
+                <div class="closing-statement">
+                    <p class="closing-line">My uncles are captains.</p>
+                    <p class="closing-line">My cousins are on the job.</p>
+                    <p class="closing-line highlight" style="margin-top: 1rem;">I'm next.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Thank You -->
+        <section class="slide slide--dark" data-slide="10">
+            <div class="slide-content">
+                <h2 class="headline">Thank You</h2>
+                <p class="body-text" style="margin-top: 1rem;">
+                    Billy Martinez<br>
+                    <span style="opacity: 0.6;">Orange Lutheran High School • First Responders Academy</span>
+                </p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-progress"></div>
+    <div class="slide-counter"><span class="current">1</span> / <span class="total">10</span></div>
+    <div class="nav-hint">Press → or Space</div>
+
+    <script>
+        class Presentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.totalSlides = this.slides.length;
+                this.currentSlide = 1;
+
+                this.navProgress = document.querySelector('.nav-progress');
+                this.counterCurrent = document.querySelector('.slide-counter .current');
+                this.counterTotal = document.querySelector('.slide-counter .total');
+
+                this.init();
+            }
+
+            init() {
+                this.createNavDots();
+                this.bindEvents();
+                this.updateCounter();
+                this.counterTotal.textContent = this.totalSlides;
+                this.goToSlide(1);
+            }
+
+            createNavDots() {
+                for (let i = 1; i <= this.totalSlides; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = 'nav-dot' + (i === 1 ? ' active' : '');
+                    dot.setAttribute('aria-label', `Go to slide ${i}`);
+                    dot.addEventListener('click', () => this.goToSlide(i));
+                    this.navProgress.appendChild(dot);
+                }
+            }
+
+            bindEvents() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+                        e.preventDefault();
+                        this.next();
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        this.prev();
+                    } else if (e.key === 'Home') {
+                        e.preventDefault();
+                        this.goToSlide(1);
+                    } else if (e.key === 'End') {
+                        e.preventDefault();
+                        this.goToSlide(this.totalSlides);
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.nav-progress') && !e.target.closest('button')) {
+                        this.next();
+                    }
+                });
+
+                let touchStartX = 0;
+                document.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].clientX;
+                }, { passive: true });
+
+                document.addEventListener('touchend', (e) => {
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const diff = touchStartX - touchEndX;
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) this.next();
+                        else this.prev();
+                    }
+                }, { passive: true });
+            }
+
+            goToSlide(n) {
+                this.slides.forEach(slide => slide.classList.remove('active'));
+                document.querySelectorAll('.nav-dot').forEach(dot => dot.classList.remove('active'));
+
+                this.currentSlide = n;
+                this.slides[n - 1].classList.add('active');
+                document.querySelectorAll('.nav-dot')[n - 1].classList.add('active');
+
+                this.updateCounter();
+            }
+
+            next() {
+                if (this.currentSlide < this.totalSlides) {
+                    this.goToSlide(this.currentSlide + 1);
+                }
+            }
+
+            prev() {
+                if (this.currentSlide > 1) {
+                    this.goToSlide(this.currentSlide - 1);
+                }
+            }
+
+            updateCounter() {
+                this.counterCurrent.textContent = this.currentSlide;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new Presentation();
+        });
+    </script>
+</body>
+</html>
